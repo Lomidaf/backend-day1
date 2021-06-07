@@ -7,10 +7,9 @@ const Todo = mongoose.model('Todo',todoSchema)
 router.get('/', async (req,res) => {
     let {select, sort, order, title, createAt} = req.query
 
-    let query = await Todo.find({})
-    console.log(query)
+    console.log({"order":order})
 
-    query.select(select)
+    let query = await Todo.find({"order":order}).select(select).sort(`+${sort}`)
 
     res.status(200).json(query);
 })

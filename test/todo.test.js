@@ -16,6 +16,8 @@ app.use(express.urlencoded({ extended: false }))
 app.use('/echo',echoRoute);
 app.use('/todo',todoRoute);
 
+
+// require("./app_test")
 beforeAll(() => {
     connectDB()
 })
