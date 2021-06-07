@@ -3,9 +3,11 @@ const express = require('express');
 const echoRoute = require('./node_app/controller/echo');
 const todoRoute = require('./node_app/controller/todo');
 const userRoute = require('./node_app/controller/user');
+const authRoute = require('./node_app/controller/auth_todo');
 const {connectDB,disconnectDB} = require('./db/dbutils');
 const httpShutdown = require("http-shutdown");
 const dotenv = require('dotenv')
+const cookieParser = require('cookie-parser')
 dotenv.config()
 
 const main = async () => {
@@ -21,21 +23,22 @@ const main = async () => {
 
     app.use(express.json())
     app.use(express.urlencoded({ extended: false }))
+    app.use(cookieParser())
 
     app.use('/public',express.static("public"))
     app.use('/echo',echoRoute);
     app.use('/todo',todoRoute);
     app.use('/user',userRoute);
+    app.use('/auth',authRoute);
 
+
+    //Not found
     app.use((req, res) => {
-        res.setHeader('content-type', 'text/html');
-        res.sendFile(path.join(__dirname,"public","index.html"))
+        res.status(404).send("404 Not found")
     });
     
-    app.use((err,req, res, next) => {
-        res.status(500).json({err:err.message, tor:true});
-    })
 
+    //Error handler
     app.use((err,req, res, next) => {
         res.status(500).json({err:err.message, tor:true});
     })

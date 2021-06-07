@@ -3,11 +3,9 @@ const express = require('express')
 const echoRoute = require('../node_app/controller/echo');
 const todoRoute = require('../node_app/controller/todo');
 const app = express()
-const {connectDB, disconnectDB} = require('../db/dbutils')
 const assert = require('assert');
 
 const dotenv = require('dotenv');
-const { response } = require('express');
 dotenv.config()
 
 app.use(express.json())
@@ -17,10 +15,10 @@ app.use('/echo',echoRoute);
 app.use('/todo',todoRoute);
 
 
-// require("./app_test")
-beforeAll(() => {
-    connectDB()
-})
+require("./app_test")
+// beforeAll(() => {
+//     connectDB()
+// })
 
 let testTodoId;
 
@@ -103,7 +101,7 @@ describe('Delete /todo/:id', function() {
 
 
 
-afterAll((done) => {
-    disconnectDB()
-    done()
-})
+// afterAll((done) => {
+//     disconnectDB()
+//     done()
+// })
