@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const saltRounds = 10;
 const User = require('../../db/schema/user')
+const tokenHandler = require('../../middleware/auth')
 
 router.post('/register',async (req, res) => {
     let {username, password, email} = req.body;
@@ -33,7 +34,7 @@ router.post('/login',async (req, res) => {
     })
 })
 
-router.get('/logout',async (req, res) => {
+router.get('/logout',tokenHandler,async (req, res) => {
     let user = req.user
 
     if(!user) return res.status(401).send({err:"Unauthorize", data:{}})
@@ -44,7 +45,7 @@ router.get('/logout',async (req, res) => {
 
 const hashPassword = async (saltRounds, plainPassword) => {
     let hashedPassword;
-    await bcrypt.hash(plainPassword, saltRounds).then(function(result){
+    bcrypt.hash(plainPassword, saltRounds).then(function(result){
         hashedPassword = result
     })
     return hashedPassword

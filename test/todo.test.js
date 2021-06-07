@@ -3,6 +3,7 @@ const express = require('express')
 const echoRoute = require('../node_app/controller/echo');
 const todoRoute = require('../node_app/controller/todo');
 const app = express()
+const {connectDB, disconnectDB} = require('../db/dbutils')
 const assert = require('assert');
 
 const dotenv = require('dotenv');
